@@ -3,8 +3,6 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStreamWriter
-import java.nio.file.Files
-import java.nio.file.Paths
 
 fun main() {
 
@@ -37,11 +35,10 @@ fun main() {
 
 @Throws(IOException::class)
 private fun createAccessToken() {
-    val sysProperty = System.getProperty(Credentials.SYS_PROPERTY)
-    val credentialsPath = Paths.get(sysProperty, Credentials.DOWNLOAD_DIR, Credentials.SERVICE_ACCOUNT)
+    val credentialsPath = object {}.javaClass.getResourceAsStream("/${Credentials.SERVICE_ACCOUNT}")
 
     val googleCredentials = GoogleCredentials
-        .fromStream(Files.newInputStream(credentialsPath))
+        .fromStream(credentialsPath)
         .createScoped(listOf(Credentials.FCM_SCOPE))
 
     googleCredentials.refreshAccessToken()
@@ -53,7 +50,7 @@ private fun createAccessToken() {
 
 @Throws(IOException::class)
 private fun saveAccessToken(content: String) {
-    val downloadDir = System.getProperty(Credentials.SYS_PROPERTY) + File.separator + Credentials.DOWNLOAD_DIR
+    val downloadDir = System.getProperty("user.home") + File.separator + "Downloads"
     val outputFile = File(downloadDir, Credentials.FILE_NAME)
     val outputStream = FileOutputStream(outputFile)
 
@@ -71,10 +68,6 @@ object Credentials {
     const val FCM_SCOPE = "https://www.googleapis.com/auth/firebase.messaging"
 
     const val SERVICE_ACCOUNT = "service-account.json"
-
-    const val DOWNLOAD_DIR = "Downloads"
-
-    const val SYS_PROPERTY = "user.home"
 
     const val FILE_NAME = "access_token.txt"
 
