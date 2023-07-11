@@ -14,7 +14,7 @@ To run the program, you need to have Kotlin installed on your machine.
 
 1. Clone the repository or download the source code files.
 2. Ensure that you have the `service-account.json` credentials file.
-3. Place the `service-account.json` file in the `Downloads` directory.
+3. Place the `service-account.json` file in the `resources` directory.
 4. Open the code in your preferred Kotlin development environment.
 
 ## Usage
